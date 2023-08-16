@@ -9,11 +9,11 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background-color: #0b0b0b;
+      background-color: #f0f0f0;
     }
     header {
-      background-color: #1b1f4a;
-      color: #ffffff;
+      background-color: #333;
+      color: #fff;
       padding: 20px;
       text-align: center;
     }
@@ -54,7 +54,7 @@
     .user-card a {
       display: block;
       text-decoration: none;
-      color: #8659ef;
+      color: #333;
     }
     .user-card img {
       width: 100px;
@@ -71,7 +71,7 @@
     }
     /* Additional styles for search bar */
     .search-bar {
-      background-color: #0b051bc3;
+      background-color: #f8f8f8;
       padding: 10px;
       display: flex;
       align-items: center;
@@ -79,22 +79,22 @@
     }
     .search-input {
       padding: 8px;
-      border: 1px solid #c2bfbf;
+      border: 1px solid #ccc;
       border-radius: 5px;
       width: 300px;
       margin-right: 10px;
     }
     .search-btn {
       padding: 8px 16px;
-      background-color: #333333;
-      color: #929292;
+      background-color: #333;
+      color: #fff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       transition: background-color 0.3s ease-in-out;
     }
     .search-btn:hover {
-      background-color: #757373;
+      background-color: #555;
     }
   </style>
 </head>
@@ -117,7 +117,6 @@
     <button class="search-btn" id="searchButton">Search</button>
   </div>
   <main>
-    <h2>   </h2>
     <div class="user-cards">
       {% for user in registered_users %}
         <div class="user-card">
@@ -126,8 +125,9 @@
             <p>{{ user.name }}</p>
             <p>Department: {{ user.department_name }}</p>
             <p>Year: {{ user.academic_year }}</p>
+            <p>Skills: {{ user.skills }}</p>
             {% if user.linkedin_handler %}
-            <a class="linkedin-link" href="https://{{ user.linkedin_handler }}" target="_blank">
+              <a class="linkedin-link" href="https://www.linkedin.com/in/{{ user.linkedin_handler }}" target="_blank">
                 LinkedIn Profile
               </a>
             {% endif %}
