@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Profile</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+  <style>
+    /* Base CSS Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0b;
+    }
+    header {
+      background-color: #1b1f4a;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    nav a {
+      color: #f8f5f5;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    nav a:hover {
+      color: #666;
+    }
+    /* Additional styles for the user profile page */
+    .profile-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      animation: fade-in 1s ease-in-out;
+    }
+    .project-list {
+      list-style: none;
+      padding: 0;
+    }
+    .project-item {
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f8f8f8;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .project-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+    .project-info {
+      flex: 1;
+    }
+    .project-info h4 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .project-media {
+      flex: 1;
+      text-align: right;
+    }
+    .project-media video {
+      max-width: 100%;
+      height: auto;
+    }
+    .source-code-link {
+      display: inline-block;
+      margin-top: 10px;
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s ease-in-out;
+    }
+    .source-code-link:hover {
+      color: #666;
+    }
+    /* Keyframes for fade-in animation */
+    @keyframes fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>User Profile</h1>
+    <nav>
+      {% if user.is_authenticated %}
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'register' %}">Register</a>
+      {% else %}
+        <a href="{% url 'login' %}">Login</a>
+        <a href="{% url 'home' %}">Home</a>
+      {% endif %}
+
+    </nav>
+  </header>
+  <main>
+    <div class="profile-container">
+      <h2>{{ user.username }}'s Profile</h2>
+      <h3>Uploaded Projects</h3>
+      <ul class="project-list">
+        {% for project in projects %}
+          <li class="project-item">
+            <div class="project-info">
+              <h4>{{ project.title }}</h4>
+              <p>{{ project.description }}</p>
+            </div>
+            <div class="project-media">
+              <video controls>
+                <source src="{{ project.demo_video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+              </video>
+              <a href="{{ project.source_code_link }}" class="source-code-link">Source Code</a>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </main>
+</body>
+</html>

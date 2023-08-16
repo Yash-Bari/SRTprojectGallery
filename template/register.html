@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Registration</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;,">
+  <style>
+    /* Add your CSS styling here */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0b;
+    }
+    header {
+      background-color: #1b1f4a;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+    }
+    form {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #333;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #666;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 10px;
+    }
+    nav a {
+      color: #f8f5f5;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    nav a:hover {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>User Registration</h1>
+    <nav>
+      <a href="{% url 'home' %}">Home</a>
+      <a href="{% url 'login' %}">Login</a>
+    </nav>
+  </header>
+  <main>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <label for="{{ user_form.username.id_for_label }}">Username:</label>
+      {{ user_form.username }}
+      <label for="{{ user_form.password1.id_for_label }}">Password:</label>
+      {{ user_form.password1 }}
+      <label for="{{ user_form.password2.id_for_label }}">Confirm Password:</label>
+      {{ user_form.password2 }}
+      <label for="{{ profile_form.name.id_for_label }}">Name:</label>
+      {{ profile_form.name }}
+      <label for="{{ profile_form.profile_picture.id_for_label }}">Profile Picture:</label>
+      {{ profile_form.profile_picture }}
+      <label for="{{ profile_form.email.id_for_label }}">Email:</label>
+      {{ profile_form.email }}
+      <label for="{{ profile_form.department_name.id_for_label }}">Department:</label>
+      {{ profile_form.department_name }}
+      <label for="{{ profile_form.academic_year.id_for_label }}">Academic Year:</label>
+      <select id="{{ profile_form.academic_year.id_for_label }}" name="{{ profile_form.academic_year.html_name }}">
+        <option value="FE">First Year (FE)</option>
+        <option value="SE">Second Year (SE)</option>
+        <option value="TE">Third Year (TE)</option>
+        <option value="BE">Fourth Year (BE)</option>
+      </select>
+      <label for="{{ profile_form.skills.id_for_label }}">Skills:</label>
+      {{ profile_form.skills }}
+      <label for="{{ profile_form.linkedin_handler.id_for_label }}">LinkedIn Handler:</label>
+      {{ profile_form.linkedin_handler }}
+      <button type="submit">Register</button>
+    </form>
+  </main>
+</body>
+</html>
