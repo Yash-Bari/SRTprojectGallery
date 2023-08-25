@@ -127,7 +127,7 @@
             <p>Year: {{ user.academic_year }}</p>
             <p>Skills: {{ user.skills }}</p>
             {% if user.linkedin_handler %}
-              <a class="linkedin-link" href="https://www.linkedin.com/in/{{ user.linkedin_handler }}" target="_blank">
+              <a class="linkedin-link" href="https://{{ user.linkedin_handler }}" target="_blank">
                 LinkedIn Profile
               </a>
             {% endif %}
