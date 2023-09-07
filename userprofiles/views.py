@@ -6,6 +6,8 @@ from .forms import UserProfileForm,ProjectForm
 from .models import UserProfile,Project
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404
+from django.contrib import messages
+from django.http import HttpResponseForbidden
 
 def register(request):
     if request.method == 'POST':
@@ -64,3 +66,44 @@ def view_user_profile(request, user_id):
     user = get_object_or_404(User, id=user_id)
     projects = Project.objects.filter(user=user)
     return render(request, 'user_profile.html', {'user': user, 'projects': projects})
+
+
+def edit_profile(request):
+    user_profile_query = UserProfile.objects.filter(user=request.user)
+    
+    if user_profile_query.exists():
+        user_profile = user_profile_query.first()
+    else:
+        user_profile = UserProfile(user=request.user)  # Create a new profile if it doesn't exist
+    
+    if request.method == 'POST':
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=user_profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            messages.success(request, 'Profile updated successfully')
+            return redirect('user_profile', user_id=request.user.id)  # Redirect to the user's profile page
+        else:
+            for field, errors in profile_form.errors.items():
+                for error in errors:
+                    messages.error(request, f'Error in {field}: {error}')
+    else:
+        profile_form = UserProfileForm(instance=user_profile)
+
+    return render(request, 'edit_profile.html', {'profile_form': profile_form})
+
+
+@login_required
+def delete_project(request, project_id):
+    project = get_object_or_404(Project, id=project_id)
+    
+    if request.user == project.user:
+        # User is the owner, allow project deletion
+        if request.method == 'POST':
+            project.delete()
+            return redirect('user_profile', user_id=request.user.id)
+        else:
+            # Display a confirmation page
+            return render(request, 'delete_project_confirm.html', {'project': project})
+    else:
+        # User is not the owner, display a permission denied page
+        return render(request, 'permission_denied.html')

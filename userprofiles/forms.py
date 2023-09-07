@@ -4,6 +4,7 @@ from .models import UserProfile,Project
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
+        exclude = ['user']
         fields = '__all__'
 
 class ProjectForm(forms.ModelForm):
