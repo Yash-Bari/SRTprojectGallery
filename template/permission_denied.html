@@ -43,7 +43,11 @@
   <div class="permission-denied-container">
     <h2>Permission Denied</h2>
     <p class="permission-denied-message">You don't have permission to delete this project.</p>
-    <a href="{% url 'user_profile' user.id %}" class="back-button">Back to Profile</a>
+    {% if user.is_authenticated %}
+      <a href="{% url 'user_profile' project.user.id %}" class="back-button">Back to Profile</a>
+    {% else %}
+      <a href="{% url 'home' %}" class="back-button">Back to Home</a>
+    {% endif %}
   </div>
 </body>
 </html>

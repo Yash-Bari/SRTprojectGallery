@@ -96,6 +96,27 @@
     .search-btn:hover {
       background-color: #555;
     }
+    .suggestions-container {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 1;
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .suggestion-item {
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+    .suggestion-item:hover {
+      background-color: #f0f0f0;
+    }
   </style>
 </head>
 <body>
@@ -115,7 +136,10 @@
     </nav>
   </header>
   <div class="search-bar">
-    <input class="search-input" type="text" id="searchInput" placeholder="Search by student name, department, or year">
+    <div style="position: relative;">
+      <input class="search-input" type="text" id="searchInput" placeholder="Search by student name, department, or year">
+      <div class="suggestions-container" id="suggestionsContainer"></div>
+    </div>
     <button class="search-btn" id="searchButton">Search</button>
   </div>
   <main>
@@ -141,10 +165,13 @@
   <script>
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
+    const suggestionsContainer = document.getElementById('suggestionsContainer');
 
-    searchButton.addEventListener('click', () => {
+    searchInput.addEventListener('input', () => {
       const searchTerm = searchInput.value.toLowerCase();
       const userCards = document.querySelectorAll('.user-card');
+
+      const suggestions = [];
 
       userCards.forEach(card => {
         const userName = card.querySelector('p:nth-child(2)').textContent.toLowerCase();
@@ -153,10 +180,44 @@
 
         if (userName.includes(searchTerm) || department.includes(searchTerm) || year.includes(searchTerm)) {
           card.style.display = 'block';
+          suggestions.push(userName);
         } else {
           card.style.display = 'none';
         }
       });
+
+      // Display suggestions
+      displaySuggestions(suggestions);
+    });
+
+    function displaySuggestions(suggestions) {
+      suggestionsContainer.innerHTML = '';
+
+      if (suggestions.length > 0) {
+        suggestions.forEach(suggestion => {
+          const suggestionItem = document.createElement('div');
+          suggestionItem.className = 'suggestion-item';
+          suggestionItem.textContent = suggestion;
+
+          suggestionItem.addEventListener('click', () => {
+            searchInput.value = suggestion;
+            suggestionsContainer.style.display = 'none';
+          });
+
+          suggestionsContainer.appendChild(suggestionItem);
+        });
+
+        suggestionsContainer.style.display = 'block';
+      } else {
+        suggestionsContainer.style.display = 'none';
+      }
+    }
+
+    // Hide suggestions on document click
+    document.addEventListener('click', (event) => {
+      if (!event.target.matches('.search-input')) {
+        suggestionsContainer.style.display = 'none';
+      }
     });
   </script>
 </body>

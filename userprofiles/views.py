@@ -92,7 +92,6 @@ def edit_profile(request):
     return render(request, 'edit_profile.html', {'profile_form': profile_form})
 
 
-@login_required
 def delete_project(request, project_id):
     project = get_object_or_404(Project, id=project_id)
     
